@@ -7,7 +7,7 @@ public class GeradorAnaliseLexicaCPP {
 
 	public static void main(String[] args) {
 		String rootPath = Paths.get("").toAbsolutePath().toString();
-		String subPath = "src/br/edu/analisador/cpp/";
+		String subPath = "/src/br/edu/analisador/cpp/";
 
 		String flexCPP = rootPath + subPath + "cpp.flex";
 
