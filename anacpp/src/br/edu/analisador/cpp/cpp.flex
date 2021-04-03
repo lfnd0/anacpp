@@ -50,7 +50,7 @@ MACRO = "%:%:":"##"
 AND = "and"|"&&"
 OR = "or"|"||"
 XOR = "xor"|"^"
-NOT = "not"
+NOT = "not"|"!"
 BIT_AND = "bitand"|"&"
 BIT_OR = "bitor"|"|"
 BIT_NOT = "compl"|"~"
@@ -69,72 +69,69 @@ KEYWORD = "alignas"|"alignof"|"asm"|"auto"|"bool"|"break"|"case"|"catch"|"char"|
 SINGLECHARACTER = [^\r\n\'\\]
 STRINGCHARACTER = [^\r\n\"\\]
 
-/* Cabecalho */
-HEADER = "<"~">"
-
 %%
 
 <YYINITIAL> {
-    {BLANK} { }
+    {BLANK} {}
     {NUMBER} {return createTokensCPP("number", yytext()); }
-    {COMMENTS} { }
+    {COMMENTS} {}
 
     /* Simbolos especiais */
-    {BRACES_LEFT} {return createTokensCPP("operator", "bracesLeft");}
-    {BRACES_RIGHT} {return createTokensCPP("operator", "bracesRight");}
-    "(" {return createTokensCPP("operator", "parenthesesLeft");}
-    ")" {return createTokensCPP("operator", "parenthesesRight");}
-    {BRACKETS_LEFT} {return createTokensCPP("operator", "bracketsLeft");}
-    {BRACKETS_RIGHT} {return createTokensCPP("operator", "bracesRight");}
-    "," {return createTokensCPP("operator", "comma");}
-    ":" {return createTokensCPP("operator", "colon");}
-    ";" {return createTokensCPP("operator", "semiColon");}
-    "*" {return createTokensCPP("operator", "asterisk");}
+    {BRACES_LEFT} {return createTokensCPP("operator", "{");}
+    {BRACES_RIGHT} {return createTokensCPP("operator", "}");}
+    "(" {return createTokensCPP("operator", "(");}
+    ")" {return createTokensCPP("operator", ")");}
+    {BRACKETS_LEFT} {return createTokensCPP("operator", "[");}
+    {BRACKETS_RIGHT} {return createTokensCPP("operator", "]");}
+    "," {return createTokensCPP("operator", ",");}
+    ":" {return createTokensCPP("operator", ":");}
+    ";" {return createTokensCPP("operator", ";");}
     {PRE_PROCESSOR} {return createTokensCPP("operator", "preProcessor");}
     {MACRO} {return createTokensCPP("operator", "macro");}
-    "..." {return createTokensCPP("operator", "ellipsis");}
+    "..." {return createTokensCPP("operator", "...");}
 
     /* Operadores aritmeticos */
-    "+" {return createTokensCPP("operator", "addition");}
-    "-" {return createTokensCPP("operator", "subtration");}
-    "/" {return createTokensCPP("operator", "division");}
-    "%" {return createTokensCPP("operator", "modulus");}
-    "++" {return createTokensCPP("operator", "increment");}
-    "--" {return createTokensCPP("operator", "decrement");}
+    "+" {return createTokensCPP("operator", "+");}
+    "-" {return createTokensCPP("operator", "-");}
+    "*" {return createTokensCPP("operator", "*");}
+    "/" {return createTokensCPP("operator", "/");}
+    "%" {return createTokensCPP("operator", "%");}
+    "++" {return createTokensCPP("operator", "++");}
+    "--" {return createTokensCPP("operator", "--");}
 
     /* Operadores relacionais */
-    "==" {return createTokensCPP("operator", "equalTo");}
+    "==" {return createTokensCPP("operator", "==");}
     {NOT_EQ} {return createTokensCPP("operator", "notEqualsTo");}
-    ">=" {return createTokensCPP("operator", "lessEqualsTo");}
-    "<=" {return createTokensCPP("operator", "greatEqualsTo");}
-    "<" {return createTokensCPP("operator", "lessThan");}
-    ">" {return createTokensCPP("operator", "greaterThan");}
+    "<=" {return createTokensCPP("operator", "<=");}
+    ">=" {return createTokensCPP("operator", ">=");}
+    "<" {return createTokensCPP("operator", "<");}
+    ">" {return createTokensCPP("operator", ">");}
 
     /* Operadores logicos */
-    {AND} {return createTokensCPP("operator", "and");}
-    {OR} {return createTokensCPP("operator", "or");}
-    {NOT} {return createTokensCPP("operator", "not");}
+    {AND} {return createTokensCPP("operator", "&&");}
+    {OR} {return createTokensCPP("operator", "||");}
+    {NOT} {return createTokensCPP("operator", "!");}
 
     /* Operadores bitwise */
     {BIT_AND} {return createTokensCPP("operator", "bitAnd");}
     {BIT_OR} {return createTokensCPP("operator", "bitOr");}
     {BIT_NOT} {return createTokensCPP("operator", "bitNot");}
     {XOR} {return createTokensCPP("operator", "xor");}
-    ">>" {return createTokensCPP("operator", "rightShift");}
-    "<<" {return createTokensCPP("operator", "leftShift");}
+    ">>" {return createTokensCPP("operator", ">>");}
+    "<<" {return createTokensCPP("operator", "<<");}
 
     /* Operadores de atribuicao */
-    "=" {return createTokensCPP("operator", "assignment");}
-    "+=" {return createTokensCPP("operator", "addAssign");}
-    "*=" {return createTokensCPP("operator", "multAssign");}
-    "/=" {return createTokensCPP("operator", "divAssign");}
-    "-=" {return createTokensCPP("operator", "subAssign");}
-    "%=" {return createTokensCPP("operator", "modAssign");}
+    "=" {return createTokensCPP("operator", "=");}
+    "+=" {return createTokensCPP("operator", "+=");}
+    "*=" {return createTokensCPP("operator", "*=");}
+    "/=" {return createTokensCPP("operator", "/=");}
+    "-=" {return createTokensCPP("operator", "-=");}
+    "%=" {return createTokensCPP("operator", "%=");}
     {AND_EQ} {return createTokensCPP("operator", "andAssign");}
     {XOR_EQ} {return createTokensCPP("operator", "xorAssign");}
     {OR_EQ} {return createTokensCPP("operator", "orAssign");}
-    "<<=" {return createTokensCPP("operator", "leftShiftAssign");}
-    ">>=" {return createTokensCPP("operator", "rightShiftAssign");}
+    "<<=" {return createTokensCPP("operator", "<<=");}
+    ">>=" {return createTokensCPP("operator", ">>=");}
 
     /* Operadores booleanos */
     "true" {return createTokensCPP("boolean", yytext());}
@@ -144,20 +141,14 @@ HEADER = "<"~">"
     \'{SINGLECHARACTER}\' {return createTokensCPP("character", yytext());}
     \" {yybegin(STRING); stringBuilder.setLength(0);}
     
+    /* Palavras reservadas */
     {KEYWORD} {return createTokensCPP("keyword", yytext());}
-    
-    /* Cabecalho */
-    {HEADER} {
-        String str = yytext();
-        str = str.substring(1, str.length()-1);
-        return createTokensCPP("header", str);
-    }
     
     /* Identificadores */
     {IDENTIFIER} {return createTokensCPP("identifier", yytext());}
     
     /* Caracteres invalidos */
-    . {throw new RuntimeException("Invalid character " + yytext());}
+    . {throw new RuntimeException("invalid character" + yytext());}
 }
 
 <STRING> {
